@@ -1,0 +1,14 @@
+solr_workspace: /srv/provision/utilities/vvv-solr-power/solr
+solr_version: "3.6.2"
+solr_service_manage: true
+solr_service_name: solr
+solr_service_state: started
+solr_install_dir: /opt
+solr_install_path: /opt/solr
+solr_home: /var/solr
+solr_port: "8984"
+solr_xms: "256M"
+solr_xmx: "512M"
+solr_connect_host: localhost
+solr_restart_handler_enabled: true
+solr_host: "0.0.0.0"
