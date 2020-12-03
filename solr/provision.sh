@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+export DEBIAN_FRONTEND=noninteractive
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 apt_package_install_list=(
   openjdk-8-jre-headless
@@ -14,7 +15,7 @@ if ! apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-
 fi
 
 ansible-galaxy install geerlingguy.solr
-ansible-playbook playbook.yml
+ansible-playbook "${DIR}/playbook.yml"
 
 mv /var/solr/conf/schema.xml /var/solr/conf/schema.xml.backup
 curl -o /var/solr/conf/schema.xml https://raw.githubusercontent.com/pantheon-systems/solr-power/master/schema.xml
