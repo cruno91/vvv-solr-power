@@ -1,7 +1,8 @@
 # vvv-solr-power
+
 WordPress Solr 3.6 for VVV
 
-Add this to VVV's config/config.yml:
+Add this to VVV's `config/config.yml` then reprovision:
 
 ```
 utilities:
