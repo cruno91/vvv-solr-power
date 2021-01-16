@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
+export DEBIAN_FRONTEND=noninteractive
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-sudo apt install openjdk-8-jre-headless -y;
-sudo apt install ansible -y;
+apt_package_install_list=(
+  openjdk-8-jre-headless
+  ansible
+)
+
+echo " * Installing apt-get packages..."
+if ! apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confnew install --fix-missing --fix-broken ${apt_package_install_list[@]}; then
+  echo " * Installing apt-get packages returned a failure code, cleaning up apt caches then exiting"
+  apt-get clean
+  return 1
+fi
 
 ansible-galaxy install geerlingguy.solr
-ansible-playbook playbook.yml
+ansible-playbook "${DIR}/playbook.yml"
 
-sudo mv /var/solr/conf/schema.xml /var/solr/conf/schema.xml.backup
-sudo curl -o /var/solr/conf/schema.xml https://raw.githubusercontent.com/pantheon-systems/solr-power/master/schema.xml
-sudo chown solr:solr /var/solr/conf/schema.xml
+mv /var/solr/conf/schema.xml /var/solr/conf/schema.xml.backup
+curl -o /var/solr/conf/schema.xml https://raw.githubusercontent.com/pantheon-systems/solr-power/master/schema.xml
+chown solr:solr /var/solr/conf/schema.xml
 
 # SOLR_PORT=${SOLR_PORT:-8984}
 
